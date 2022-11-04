@@ -212,11 +212,6 @@ void Periodic_Transmitter( void * pvParameters )
     {
 				xTaskNotifyIndexed( Uart_Receiver_Handler, 2, (uint32_t) &PT_MESSAGE, eSetValueWithOverwrite );
 			
-				//vTaskGetRunTimeStats(runTimeStatsBuff);
-				//xTaskNotifyIndexed( Uart_Receiver_Handler, 2, (uint32_t) runTimeStatsBuff, eSetValueWithOverwrite );
-				//xSerialPutChar('\n');
-				//vSerialPutString((const signed char*) (runTimeStatsBuff), 200);
-			
 				// Wait for the next cycle.
 				vTaskDelayUntil( &xLastWakeTime, 10 );
     }//for
