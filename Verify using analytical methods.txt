@@ -1,0 +1,52 @@
+- System Hyperperiod: 100mS.
+
+-------------------------------------------------------
+- CPU Load:-
+	"Button_1_Monitor"		Execution time(E):		13uS		Periodicity(P):		50mS
+	"Button_2_Monitor" 		E: 						13uS		P:					50mS
+	"Periodic_Transmitter" 	E: 						16uS		P:					100mS
+	"Uart_Receiver" 		E: 						26uS		P:					20mS
+	"Load_1_Simulation" 	E: 						5ms			P:					10mS
+	"Load_2_Simulation" 	E: 						12ms		P:					100mS
+	
+	CPU Load = ((2*0.013mS) + (2*0.013mS) + (1*0.016mS) + (5*0.026mS) + (10*5mS) + (1*12mS)) / (100mS)
+			 = 62.198mS / 100mS = 0.62 = 62%
+		
+-------------------------------------------------------		
+- System schedulability using URM and time demand analysis:-
+	Using URM:-
+	-----------
+		* U = (0.013/50) + (0.013/50) + (0.016/100) + (0.026/20) + (5/10) + (12/100) = 0.622
+		* URM = 6 * (2^(1/6) - 1) = 0.73
+		* U < URM	--> (Schedulable)
+	
+	Using Time Demand Analysis:-
+	----------------------------
+		* Time demand for "Load_1_Simulation":
+			W(10) = 5 + 0 = 5mS
+			W(10) < D = 5mS < 10mS	--> (Schedulable)
+			
+			
+		* Time demand for "Uart_Receiver":
+			W(20) = 0.026 + (20/10)*5 = 10.026mS
+			W(20) < D = 10.026mS < 20mS	--> (Schedulable)
+		
+		
+		* Time demand for "Button_1_Monitor":
+			W(50) = 0.013 + (50/10)*5 + (50/20)*0.026 = 25.078mS
+			W(50) < D = 25.078mS < 50mS	--> (Schedulable)
+			
+			
+		* Time demand for "Button_2_Monitor":
+			W(50) = 0.013 + (50/10)*5 + (50/20)*0.026 + (50/50)*0.013 = 25.091mS
+			W(50) < D = 25.091mS < 50mS	--> (Schedulable)
+			
+			
+		* Time demand for "Periodic_Transmitter":
+			W(100) = 0.016 + (100/10)*5 + (100/20)*0.026 + (100/50)*0.013 + (100/50)*0.013 = 50.198mS
+			W(100) < D = 50.198mS < 100mS	-->	(Schedulable)
+			
+			
+		* Time demand for "Load_2_Simulation":
+			W(100) = 12ms + (100/10)*5 + (100/20)*0.026 + (100/50)*0.013 + (100/50)*0.013 + (100/100)*0.016 = 62.198mS
+			W(100) < D = 62.198mS < 100mS	-->	(Schedulable)
